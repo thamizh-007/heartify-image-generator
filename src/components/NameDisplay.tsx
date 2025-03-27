@@ -30,7 +30,7 @@ const NameDisplay = forwardRef<HTMLDivElement, NameDisplayProps>(
           <span className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-wider animate-fade-in">{secondName}</span>
         </div>
         
-        <div className="text-sm text-muted-foreground tracking-wide animate-subtle-float mt-4">
+        <div className="text-sm text-gray-400 tracking-wide animate-subtle-float mt-4">
           © Made for each other
         </div>
       </div>

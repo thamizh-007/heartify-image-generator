@@ -57,9 +57,9 @@ const Index = () => {
       container.style.position = 'fixed';
       container.style.left = '-9999px';
       container.style.top = '-9999px';
-      container.style.width = '600px'; // Fixed width for consistent output
+      container.style.width = '800px'; // Wider container for better result
       container.style.backgroundColor = '#121212';
-      container.style.padding = '30px';
+      container.style.padding = '40px'; // More padding
       container.style.display = 'flex';
       container.style.justifyContent = 'center';
       container.style.alignItems = 'center';
@@ -68,7 +68,7 @@ const Index = () => {
       container.appendChild(elementToCapture);
       document.body.appendChild(container);
       
-      // Ensure the heart is properly positioned
+      // Ensure the heart is properly positioned and styled
       const heartElements = elementToCapture.querySelectorAll('.heart-container');
       heartElements.forEach(heart => {
         (heart as HTMLElement).style.display = 'flex';
@@ -76,10 +76,24 @@ const Index = () => {
         (heart as HTMLElement).style.justifyContent = 'center';
       });
       
-      // Capture the image
+      // Style the footer text
+      const footerElement = elementToCapture.querySelector('.text-gray-400');
+      if (footerElement) {
+        (footerElement as HTMLElement).style.fontSize = '16px';
+        (footerElement as HTMLElement).style.marginTop = '16px';
+        (footerElement as HTMLElement).style.color = '#C8C8C9';
+      }
+      
+      // Make names consistent in size
+      const nameElements = elementToCapture.querySelectorAll('.text-4xl');
+      nameElements.forEach(name => {
+        (name as HTMLElement).style.fontSize = '60px';  
+      });
+      
+      // Capture the image with higher quality
       const canvas = await html2canvas(elementToCapture, {
         backgroundColor: '#121212',
-        scale: 2,
+        scale: 3, // Higher scale for better resolution
         logging: false,
       });
       
