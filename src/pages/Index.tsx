@@ -8,7 +8,6 @@ import { useToast } from "@/components/ui/use-toast";
 import html2canvas from 'html2canvas';
 import NameDisplay from '@/components/NameDisplay';
 
-// Add html2canvas dependency
 const Index = () => {
   const [firstName, setFirstName] = useState('');
   const [secondName, setSecondName] = useState('');
@@ -50,11 +49,42 @@ const Index = () => {
     if (!resultRef.current) return;
 
     try {
-      const canvas = await html2canvas(resultRef.current, {
+      // Create a clone of the element for downloading to preserve proper styling
+      const elementToCapture = resultRef.current.cloneNode(true) as HTMLElement;
+      
+      // Create a temporary container with specific dimensions
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.left = '-9999px';
+      container.style.top = '-9999px';
+      container.style.width = '600px'; // Fixed width for consistent output
+      container.style.backgroundColor = '#121212';
+      container.style.padding = '30px';
+      container.style.display = 'flex';
+      container.style.justifyContent = 'center';
+      container.style.alignItems = 'center';
+      
+      // Add the clone to our container
+      container.appendChild(elementToCapture);
+      document.body.appendChild(container);
+      
+      // Ensure the heart is properly positioned
+      const heartElements = elementToCapture.querySelectorAll('.heart-container');
+      heartElements.forEach(heart => {
+        (heart as HTMLElement).style.display = 'flex';
+        (heart as HTMLElement).style.alignItems = 'center';
+        (heart as HTMLElement).style.justifyContent = 'center';
+      });
+      
+      // Capture the image
+      const canvas = await html2canvas(elementToCapture, {
         backgroundColor: '#121212',
         scale: 2,
         logging: false,
       });
+      
+      // Clean up
+      document.body.removeChild(container);
 
       const link = document.createElement('a');
       link.download = `${firstName}-${secondName}.png`;
@@ -129,7 +159,7 @@ const Index = () => {
             </Button>
           </form>
         ) : (
-          <div className="mt-6">
+          <div className="mt-6 flex flex-col">
             <NameDisplay
               ref={resultRef}
               firstName={firstName}
@@ -138,13 +168,22 @@ const Index = () => {
               onDownload={handleDownload}
             />
             
-            <Button 
-              onClick={() => setShowNames(false)}
-              variant="secondary" 
-              className="w-full mt-4 h-12"
-            >
-              Create New
-            </Button>
+            <div className="flex flex-col gap-4 mt-4">
+              <Button 
+                onClick={handleDownload}
+                className="w-full h-12 text-lg bg-red-600 hover:bg-red-700 transition-colors duration-300"
+              >
+                Download Image
+              </Button>
+              
+              <Button 
+                onClick={() => setShowNames(false)}
+                variant="secondary" 
+                className="w-full h-12"
+              >
+                Create New
+              </Button>
+            </div>
           </div>
         )}
       </div>

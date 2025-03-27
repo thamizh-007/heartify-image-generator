@@ -1,6 +1,6 @@
 
-import React, { useRef, forwardRef } from 'react';
-import { Heart, Download } from 'lucide-react';
+import React, { forwardRef } from 'react';
+import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NameDisplayProps {
@@ -11,7 +11,7 @@ interface NameDisplayProps {
 }
 
 const NameDisplay = forwardRef<HTMLDivElement, NameDisplayProps>(
-  ({ firstName, secondName, visible, onDownload }, ref) => {
+  ({ firstName, secondName, visible }, ref) => {
     return (
       <div 
         ref={ref}
@@ -20,16 +20,6 @@ const NameDisplay = forwardRef<HTMLDivElement, NameDisplayProps>(
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         )}
       >
-        <div className="absolute top-6 right-6">
-          <button 
-            onClick={onDownload}
-            className="flex items-center justify-center p-2 rounded-full hover:bg-secondary transition-colors duration-300"
-            aria-label="Download image"
-          >
-            <Download size={20} className="text-muted-foreground hover:text-foreground transition-colors duration-300" />
-          </button>
-        </div>
-        
         <div className="flex items-center justify-center space-x-8 sm:space-x-10 mb-8">
           <span className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-wider animate-fade-in">{firstName}</span>
           
