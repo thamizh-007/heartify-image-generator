@@ -157,7 +157,7 @@ const Index = () => {
           </div>
           
           <h1 className="text-2xl sm:text-3xl font-bold tracking-widest text-center">
-            SF FERRY DEPARTURES
+            LOVE PLANES DEPARTURES
           </h1>
           
           <div className="text-sm sm:text-base red-glow text-red-600 ml-2">
