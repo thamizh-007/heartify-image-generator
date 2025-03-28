@@ -21,7 +21,7 @@ const Index = () => {
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
-      setCurrentTime(`${hours}:${minutes}:${seconds} PST`);
+      setCurrentTime(`${hours}:${minutes}:${seconds}`);
     };
 
     updateTime();
@@ -156,11 +156,11 @@ const Index = () => {
             <Anchor size={18} className="mr-2 opacity-80" />
           </div>
           
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-widest text-center">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-widest text-center whitespace-nowrap">
             LOVE PLANES DEPARTURES
           </h1>
           
-          <div className="text-sm sm:text-base red-glow text-red-600 ml-2">
+          <div className="text-xs sm:text-sm red-glow text-red-600">
             {currentTime}
           </div>
         </div>
