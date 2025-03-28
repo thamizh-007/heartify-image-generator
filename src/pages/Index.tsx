@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Anchor } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
 import { useToast } from "@/components/ui/use-toast";
 import html2canvas from 'html2canvas';
 import NameDisplay from '@/components/NameDisplay';
@@ -49,52 +48,81 @@ const Index = () => {
     if (!resultRef.current) return;
 
     try {
-      // Create a clone of the element for downloading to preserve proper styling
-      const elementToCapture = resultRef.current.cloneNode(true) as HTMLElement;
-      
-      // Create a temporary container with specific dimensions
+      // Create a temporary container for capturing
       const container = document.createElement('div');
+      container.className = 'image-capture-container';
       container.style.position = 'fixed';
       container.style.left = '-9999px';
       container.style.top = '-9999px';
-      container.style.width = '800px'; // Wider container for better result
+      container.style.width = '1000px'; // Even wider container for better result
       container.style.backgroundColor = '#121212';
-      container.style.padding = '40px'; // More padding
-      container.style.display = 'flex';
-      container.style.justifyContent = 'center';
-      container.style.alignItems = 'center';
-      
-      // Add the clone to our container
-      container.appendChild(elementToCapture);
+      container.style.padding = '60px'; // More padding
       document.body.appendChild(container);
       
-      // Ensure the heart is properly positioned and styled
-      const heartElements = elementToCapture.querySelectorAll('.heart-container');
-      heartElements.forEach(heart => {
-        (heart as HTMLElement).style.display = 'flex';
-        (heart as HTMLElement).style.alignItems = 'center';
-        (heart as HTMLElement).style.justifyContent = 'center';
-      });
+      // Create a custom element for the download to ensure proper formatting
+      const captureEl = document.createElement('div');
+      captureEl.className = 'capture-content';
+      captureEl.style.display = 'flex';
+      captureEl.style.flexDirection = 'column';
+      captureEl.style.alignItems = 'center';
+      captureEl.style.justifyContent = 'center';
+      captureEl.style.width = '100%';
+      captureEl.style.padding = '40px';
+      captureEl.style.borderRadius = '8px';
+      captureEl.style.backgroundColor = '#121212';
+      captureEl.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
       
-      // Style the footer text
-      const footerElement = elementToCapture.querySelector('.text-gray-400');
-      if (footerElement) {
-        (footerElement as HTMLElement).style.fontSize = '16px';
-        (footerElement as HTMLElement).style.marginTop = '16px';
-        (footerElement as HTMLElement).style.color = '#C8C8C9';
-      }
+      // Names and heart container
+      const namesContainer = document.createElement('div');
+      namesContainer.style.display = 'flex';
+      namesContainer.style.alignItems = 'center';
+      namesContainer.style.justifyContent = 'center';
+      namesContainer.style.marginBottom = '30px';
+      namesContainer.style.gap = '50px'; // Ensure consistent spacing
       
-      // Make names consistent in size
-      const nameElements = elementToCapture.querySelectorAll('.text-4xl');
-      nameElements.forEach(name => {
-        (name as HTMLElement).style.fontSize = '60px';  
-      });
+      // First name
+      const firstNameEl = document.createElement('div');
+      firstNameEl.textContent = firstName;
+      firstNameEl.style.fontSize = '60px';
+      firstNameEl.style.fontWeight = 'bold';
+      firstNameEl.style.color = 'white';
+      firstNameEl.style.letterSpacing = '2px';
+      
+      // Heart
+      const heartContainer = document.createElement('div');
+      heartContainer.innerHTML = `<svg width="60" height="60" viewBox="0 0 24 24" fill="#dc2626" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+      heartContainer.style.filter = 'drop-shadow(0 0 5px rgba(220, 38, 38, 0.7))';
+      
+      // Second name
+      const secondNameEl = document.createElement('div');
+      secondNameEl.textContent = secondName;
+      secondNameEl.style.fontSize = '60px';
+      secondNameEl.style.fontWeight = 'bold';
+      secondNameEl.style.color = 'white';
+      secondNameEl.style.letterSpacing = '2px';
+      
+      // Footer
+      const footerEl = document.createElement('div');
+      footerEl.textContent = '© Made for each other';
+      footerEl.style.fontSize = '18px';
+      footerEl.style.color = '#C8C8C9';
+      footerEl.style.marginTop = '30px';
+      footerEl.style.letterSpacing = '1px';
+      
+      // Assemble the elements
+      namesContainer.appendChild(firstNameEl);
+      namesContainer.appendChild(heartContainer);
+      namesContainer.appendChild(secondNameEl);
+      captureEl.appendChild(namesContainer);
+      captureEl.appendChild(footerEl);
+      container.appendChild(captureEl);
       
       // Capture the image with higher quality
-      const canvas = await html2canvas(elementToCapture, {
+      const canvas = await html2canvas(captureEl, {
         backgroundColor: '#121212',
-        scale: 3, // Higher scale for better resolution
+        scale: 4, // Higher scale for better resolution
         logging: false,
+        useCORS: true
       });
       
       // Clean up
